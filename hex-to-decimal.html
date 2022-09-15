@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Hexadecimal to Decimal String</title>
+    <style>
+      html {
+        background-color: black;
+        color: #ffd204;
+        padding: 0 16px 16px 16px;
+      }
+      h1 {
+        width: 100%;
+        text-align: center;
+        color: white;
+      }
+      h3 {
+        width: 100%;
+        text-align: left;
+        color: #ffd204;
+        font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
+      }
+      .window {
+        display: inline-block;
+        width: 100%;
+        align-content: center;
+      }
+      .controls {
+        width: 100%;
+        margin-bottom: 3em;
+      }
+      .input {
+        margin: 16px 0;
+        min-height: 6em;
+      }
+      .textfield {
+        display: inherit;
+        width: 100%;
+        border-style: solid;
+        border-color: #ffd204;
+        border-radius: 12px;
+        background-color: lightgray;
+        color: black;
+        text-align: left;
+        padding: 16px;
+        min-height: 100px;
+        max-width: 500px;
+      }
+      .delimiter {
+        max-width: 10%;
+      }
+      .delimiterDiv {
+        margin: 1em 0;
+      }
+      .resultDisplay {
+        font-family: monospace;
+      }
+      button {
+        padding: 8px;
+        border-radius: 10px;
+        min-width: fit-content;
+        width: 120px;
+        display: block;
+      }
+      .delimiterHint {
+        display: inline;
+        color: white;
+        margin: 0 8px;
+        font-style: italic;
+      }
+  </style>
+  </head>
+  <body>
+    <div id="root" class="root">
+        <h1 class="pageHeader">Hexadecimal to Decimal String</h2>
+        <div class="window">
+          <div class="controls">
+            <h3>Hexadecimal string</h3>
+            <textarea
+              class="input textfield"
+              id="dataInput"
+              aria-multiline="true"
+              placeholder="03 D0 ae 01 10 444"
+            >
+            </textarea>
+            <button id="clearButton" type="reset" onclick="clearDisplay()">Clear</button>
+            <div class="delimiterDiv">
+              <label>Delimiter</label>
+              <input
+                id="delimiter"
+                class="delimiter"
+                type="text" 
+              >
+              <p class="delimiterHint">default is single space</p>
+            </div>
+          </div>
+          <div class="resultWindow">
+            <h3>Decimal</h3>
+            <p id="resultDisplay" class="resultDisplay textfield"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      // retrieve all important document elements
+      const input = document.getElementById('dataInput');
+      const delimiterTextBox = document.getElementById('delimiter');
+      const clearButton = document.getElementById('clearButton');
+      const resultDisplay = document.getElementById('resultDisplay');
+
+      // add listeners to update result when input changes
+      input.addEventListener('keyup', () => receiveInput());
+      input.addEventListener('change', () => receiveInput());
+      delimiterTextBox.addEventListener('keyup', () => receiveInput());
+      
+      // reset to clear any existing input
+      input.value = '';
+      delimiterTextBox.value = ' ';
+
+      const clearDisplay = () => {
+        console.log('Clearing result display');
+        input.value = '';
+        resultDisplay.textContent = '';
+      };
+
+      const receiveInput = () => {
+        const inputString = input.value.toLowerCase();
+        const delimiterString =
+          delimiterTextBox.value.length < 1 ? ' ' : delimiterTextBox.value;
+
+        const hexValues = inputString
+          .split(delimiterString)
+          .map((it) => {
+            const hex = parseInt(it, 16);
+            return isNaN(hex) ? '_' : hex;
+          })
+          .join(' ');
+
+        resultDisplay.textContent = hexValues;
+      };
+    </script>
+  </body>
+</html>
